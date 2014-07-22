@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="todoApp">
+<head>
+    <title>TO DO List</title>
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="/bootstrap/css/bootstrap-theme.css" rel="stylesheet" />
+	<script type="text/javascript" src="angular.js"></script>
+	<script type="text/javascript">
+		//module creation
+		var todoApp = angular.module("todoApp",[]);
+		
+		//model
+		var model = {
+				user:"Luis",
+				items:[{action:"Buy flowers",done:false}
+					  ,{action:"Get shoes",done:false}
+					  ,{action:"Collect Tickets",done:true}
+   					  ,{action:"Call Joe",done:false}
+					 ]
+		};
+		
+		//controller
+		todoApp.controller("toDoCtrl",function($scope){
+			$scope.todo = model;
+			
+			$scope.incompleteCount = function(){
+				var count = 0;			
+				angular.forEach($scope.todo.items,function(item,key){
+					if(!item.done){
+						count++;						
+					}
+				});
+				return count;
+			};
+		});	
+	</script>
+</head>
+<body ng-controller="toDoCtrl">
+    <div class="page-header">
+        <h1>
+			{{todo.user}} To Do List
+			<span class="label label-default" ng-hide="incompleteCount() == 0">{{incompleteCount()}}</span>
+		</h1>
+    </div>
+    <div class="panel">
+        <div class="input-group">
+            <input class="form-control" />
+            <span class="input-group-btn">
+                <button class="btn btn-default">Add</button>
+            </span>
+	    </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Done</th>
+                </tr>
+            </thead>
+            <tbody>
+				<tr ng-repeat="item in todo.items">
+					<td>{{item.action}}</td>					
+				    <td><input type="checkbox" ng-model="item.done" /></td>
+				</tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
